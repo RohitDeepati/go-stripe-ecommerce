@@ -27,5 +27,4 @@ type OrderResponse struct{
 		ProductTitle string	`json:"product_title" db:"product_title"`
     ProductPrice float64   `json:"product_price" db:"product_price"`
     OrderQuantity int  `json:"order_quantity" db:"order_quantity"`
-
 }

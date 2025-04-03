@@ -14,8 +14,7 @@ import (
 
 
 func initDB()(*sqlx.DB, error){
-	connStr := "host=localhost port=5432 dbname=go-ecommerceDB sslmode=disable"
-
+	connStr := "host=centerbeam.proxy.rlwy.net port=53668 user=postgres password=SQTxYdfQMgVqVYhAujhmyBsOLwMBTmXA dbname=railway sslmode=disable"
 	db, err := sqlx.Open("postgres", connStr)
 	if err != nil {
 		return nil, err
