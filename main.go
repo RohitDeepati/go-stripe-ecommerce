@@ -38,7 +38,7 @@ func main(){
 	rg := gin.Default()
 	rg.Use(cors.New(cors.Config{
 		AllowOrigins: 		[]string{"*"}, // React app's origin
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"},
 		AllowHeaders:     []string{"Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
