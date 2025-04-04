@@ -5,6 +5,7 @@ import (
 	"go-ecommerce/daos"
 	"go-ecommerce/middleware"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
@@ -26,6 +27,7 @@ func (h *ProductDB) RouteGroup(r *gin.Engine){
 	authorized := routeGroup.Group("/", middleware.AuthenticationMiddleware())
 	{
 		authorized.GET("/products", middleware.UserRoleMiddleware(), h.getAllProducts)
+		authorized.DELETE("/products/:id", middleware.UserRoleMiddleware(), h.deleteProductById)
 	}
 	routeGroup.POST("/newproducts", h.insertNewProduct )
 	
@@ -42,9 +44,6 @@ func (h *ProductDB) insertNewProduct(ctx *gin.Context){
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error":err.Error()})
 		return
 	}
-
-
-
 	ctx.JSON(http.StatusOK, gin.H{"message": "product added successfully"})
 }
 
@@ -55,4 +54,21 @@ func (h *ProductDB) getAllProducts(ctx *gin.Context){
 		return
 	}
 	ctx.JSON(http.StatusOK, res)
+}
+
+func (h *ProductDB) deleteProductById(ctx *gin.Context){
+	id := ctx.Param("id")
+	productId, err := strconv.Atoi(id)
+
+	if err != nil{
+		ctx.JSON(http.StatusBadRequest, gin.H{"error":err.Error()})
+		return
+	}
+
+	err = daos.RemoveProductById(h.db, productId)
+	if err != nil{
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error":err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"message":"Product deleted successfully"})
 }

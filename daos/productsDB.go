@@ -36,3 +36,19 @@ func GetProducts(db *sqlx.DB)([]beans.Products, error){
 	 return products, err
 }
 
+func RemoveProductById(db *sqlx.DB, productId int) error{
+	query := `DELETE FROM PRODUCTS where productid=$1`
+
+	result, err := db.Exec(query, productId)
+	if err != nil{
+		return err
+	}
+	rowsAffected, err := result.RowsAffected()
+	if err != nil{
+		return err
+	}
+	if rowsAffected == 0{
+		return fmt.Errorf("no product found with the id %d", productId)
+	}
+	return nil
+}
