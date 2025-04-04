@@ -52,3 +52,12 @@ func RemoveProductById(db *sqlx.DB, productId int) error{
 	}
 	return nil
 }
+
+func UpdateProductById(db *sqlx.DB, id string, updateProduct *beans.Products)error{
+	query := `UPDATE products SET name=$1, title=$2, price=$3, stock=$4, image=$5 where productid=$6`
+	_, err := db.Exec(query, updateProduct.Name, updateProduct.Title, updateProduct.Price, updateProduct.Stock, updateProduct.Image, id)
+	if err != nil{
+		return err
+	}
+	return nil
+}
