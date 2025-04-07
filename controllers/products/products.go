@@ -82,18 +82,7 @@ func (h *ProductDB) updateProductById(ctx *gin.Context){
 		ctx.JSON(http.StatusBadRequest, gin.H{"error":err.Error()})
 		return
 	}
-
-	exists, err := daos.CheckingProductById(h.db, id)
-	if err != nil{
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error":"failed to check the product with the given id", "details":err.Error()})
-		return
-	}
-	if !exists{
-		ctx.JSON(http.StatusBadRequest, gin.H{"error":"product is doesn't exist with the given id"})
-		return
-	}
-
-	err = daos.UpdateProductById(h.db, id, &updateProduct)
+	err := daos.UpdateProductById(h.db, id, &updateProduct)
 	if err != nil{
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error":err.Error()})
 		return

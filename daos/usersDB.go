@@ -96,16 +96,3 @@ func DeleteUserByEmail(db *sqlx.DB, email string)error{
 	}
 	return nil
 }
-
-func CheckingProductById(db *sqlx.DB, id string)(bool, error){
-	var product beans.Products
-	query := `SELECT name, title, price, stock, image from product WHERE productid=$1`
-	err := db.Get(&product, query, id)
-	if err != nil{
-		if err == sql.ErrNoRows {
-			return false, nil
-		}
-		return false, err
-	}
-	return true, nil
-}
