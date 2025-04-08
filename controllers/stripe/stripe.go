@@ -198,8 +198,8 @@ func (h * StripeDB) handleCheckoutSession(ctx *gin.Context){
 	params := &stripe.CheckoutSessionParams{
 		PaymentMethodTypes: stripe.StringSlice([]string{"card"}),
 		Mode: stripe.String(string(stripe.CheckoutSessionModePayment)),
-		SuccessURL: stripe.String("http://localhost:5173/success?session_id={CHECKOUT_SESSION_ID}"),
-		CancelURL: stripe.String("http://localhost:5173/cart"),
+		SuccessURL: stripe.String("https://rohits-stripe-payment.netlify.app/?session_id={CHECKOUT_SESSION_ID}"),
+		CancelURL: stripe.String("https://rohits-stripe-payment.netlify.app/cart"),
 		LineItems: lineItems,
 	}
 
