@@ -4,13 +4,13 @@ package beans
 
 type Order struct {
 	ID     int `json:"id"`
-	UserID int `json:"userid"`
+	UserID int `json:"user_id"`
 }
 
 type OrderItem struct {
 	OrderID   int `json:"order_id" db:"order_id"`
-	UserID    int `json:"userid" db:"userid"`
-	ProductID int `json:"productid" db:"productid"`
+	UserID    int `json:"userid" db:"user_id"`
+	ProductID int `json:"productid" db:"product_id"`
 	Quantity  int `json:"quantity" db:"quantity"`
 }
 

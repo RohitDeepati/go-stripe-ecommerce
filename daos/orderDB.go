@@ -24,12 +24,12 @@ func InsertItemToOrder(db *sqlx.DB, products []beans.OrderItem, userId int)error
 	defer tx.Rollback()
 
 	var orderID int
-	err = tx.QueryRow("INSERT INTO orders (userid) VALUES ($1) RETURNING id", userId).Scan(&orderID)
+	err = tx.QueryRow("INSERT INTO orders (user_id) VALUES ($1) RETURNING id", userId).Scan(&orderID)
 	if err != nil{
 		return err
 	}
 
-	query := `INSERT INTO order_items(order_id, userid, productid, quantity) VALUES(:order_id, :userid, :productid, :quantity)`
+	query := `INSERT INTO order_items(order_id, user_id, product_id, quantity) VALUES(:order_id, :user_id, :product_id, :quantity)`
 	for i := range products {
 		products[i].OrderID = orderID // Assign the new order ID
 
