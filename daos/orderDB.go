@@ -63,18 +63,22 @@ func QueryAllItems(db *sqlx.DB)([]beans.OrderResponse, error){
 	var items []beans.OrderResponse
 	query := `SELECT
 	orders.id AS order_id,
-	users.userid AS user_id,
+	users.userId AS user_id,
 	users.name AS user_name,
-	products.productid AS product_id,
+	users.email AS email,
+	products.productId AS product_id,
 	products.name AS product_name,
 	products.price AS product_price,
-	orders.quantity AS order_quantity
+	products.image AS image,
+	order_items.quantity AS order_quantity
 FROM
 	orders
 JOIN
-	users ON orders.userid = users.userId
+	order_items ON orders.id = order_items.order_id
 JOIN
-	products ON orders.productid = products.productId `
+	users ON orders.user_id = users.userId
+JOIN
+	products ON order_items.product_id = products.productId`
 	err := db.Select(&items, query)
 	if err != nil{
 		return nil, err
@@ -85,27 +89,25 @@ JOIN
 func QueryOrderByEmail(db *sqlx.DB, email string)([]beans.OrderResponse, error){
 	var orderItems []beans.OrderResponse
 	query := `SELECT
-		order_items.id AS id,
-    order_items.order_id AS order_item_id,
-    users.userid AS user_id,
-    users.name AS user_name,
-    users.email AS email,
-    products.productId AS product_id,
-    products.image AS image,
-    products.name AS product_name,
-    products.title AS product_title,
-    products.price AS product_price,
-    order_items.quantity AS order_quantity
+	orders.id AS order_id,
+	users.userId AS user_id,
+	users.name AS user_name,
+	users.email AS email,
+	products.productId AS product_id,
+	products.name AS product_name,
+	products.price AS product_price,
+	products.image AS image,
+	order_items.quantity AS order_quantity
 FROM
-    orders
+	orders
 JOIN
-    order_items ON orders.id = order_items.order_id  
+	order_items ON orders.id = order_items.order_id
 JOIN
-    users ON orders.userid = users.userId  
+	users ON orders.user_id = users.userId
 JOIN
-    products ON order_items.productid = products.productId
-	where 
-		users.email = $1`
+	products ON order_items.product_id = products.productId
+WHERE
+	users.email =$1`
 	err := db.Select(&orderItems, query, email)
 	if err != nil{
 		return nil, err
